@@ -1,14 +1,20 @@
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        for(int i = 0; i < nums.length; i++) {
-            for(int j = i + 1; j < nums.length; j++) {
-                if(nums[i] + nums[j] == target) {
-                    return new int[] {i, j};
-                }
+
+        Map <Integer, Integer> numMap = new HashMap<>();
+
+        //Build the hash table
+        for(int i=0; i < nums.length; i++){
+            numMap.put(nums[i], i);
+        }
+
+        for(int i=0; i<nums.length; i++){
+            int complement = target - nums[i];
+            //if the complement exist as a key and it's value (index) not equal i
+            if(numMap.containsKey(complement) && numMap.get(complement) != i){
+                return new int[]{i, numMap.get(complement)};
             }
         }
-        // If no such pair is found, return an empty array or throw an exception
-        // depending on the requirements of your problem.
         return new int[0];
     }
 }
