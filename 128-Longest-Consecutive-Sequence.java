@@ -1,33 +1,25 @@
 class Solution {
     public int longestConsecutive(int[] nums) {
-        int longestLength = 0;
-        // map to store if the number checked or not
-        Map<Integer, Boolean> checkedMap = new HashMap<>(); 
-        //populeate the Map
-        for(int num : nums){
-            checkedMap.put(num, Boolean.FALSE);
+        if(nums == null || nums.length == 0){
+            return 0;
         }
-        
-        for(int num : nums){
-            int currentLength = 1;
 
-            //Check in forward direction
-            int nextNum = num + 1;
-            while(checkedMap.containsKey(nextNum) && checkedMap.get(nextNum) == false){
-                currentLength++;
-                checkedMap.put(nextNum, Boolean.TRUE);
-                nextNum++;
-            }
+        Arrays.sort(nums);
 
-            //check in reverse direction
-            int prevNum = num - 1;
-            while(checkedMap.containsKey(prevNum) && !checkedMap.get(prevNum)){
-                currentLength++;
-                checkedMap.put(prevNum, Boolean.TRUE);
-                prevNum--;
+        int longestLength = 1;
+        int currentLength = 1;
+
+        for(int i =1; i < nums.length; i++){
+            if(nums[i] != nums[i - 1]){
+                if(nums[i] == nums[i - 1] + 1){
+                    currentLength++;
+                }else{
+                    longestLength = Math.max(longestLength, currentLength);
+                    currentLength = 1;
+                }
+                longestLength = Math.max(longestLength, currentLength);
             }
-         longestLength = Math.max(longestLength, currentLength);
         }
-    return longestLength;
+        return longestLength;
     }
 }
