@@ -14,6 +14,8 @@ class Solution {
             maxRepeatCharCount = Math.max(maxRepeatCharCount, map.get(c));
 
             windowSize = windowEnd - windowStart + 1;
+            //windoSize - maxRepeatingCount -> the non repeating characters
+            //and if greater than k I have to slide the window
             if (windowSize - maxRepeatCharCount > k) {
                 char leftChar = s.charAt(windowStart);
                 map.put(leftChar, map.get(leftChar) - 1);
