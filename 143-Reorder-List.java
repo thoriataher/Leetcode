@@ -1,32 +1,43 @@
 /**
  * Definition for singly-linked list.
  * public class ListNode {
- * int val;
- * ListNode next;
- * ListNode() {}
- * ListNode(int val) { this.val = val; }
- * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
     public void reorderList(ListNode head) {
-        List<Integer> arr = new ArrayList<>();
-        ListNode current = head;
-        while (current != null) {
-            arr.add(current.val);
-            current = current.next;
+        //1. Find the midpoint using slow & fast Pointer
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
         }
-        int start = 0, end = arr.size() - 1;
-        current = head;
-        boolean flag = true;
-        while (current != null) {
-            if (flag) {
-                current.val = arr.get(start++);
-            } else {
-                current.val = arr.get(end--);
-            }
-            flag = !flag;
-            current = current.next;
+        //2. Reverse the second half
+        ListNode current = slow.next;
+        slow.next = null; //split the list into halves
+        ListNode previous = null;
+        while(current != null){
+            ListNode next = current.next;
+            current.next = previous;
+            previous = current;
+            current = next;
+        }        
+        //3. Join them and reorder
+        ListNode p1 = head;
+        ListNode p2 = previous;
+        while(p2 != null){
+            ListNode temp1 = p1.next;
+            ListNode temp2 = p2.next;
+            p1.next = p2;
+            p2.next = temp1;
+            //move the pointers
+            p1 = temp1;
+            p2 = temp2;
         }
     }
 }
