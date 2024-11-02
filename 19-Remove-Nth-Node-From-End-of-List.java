@@ -1,35 +1,45 @@
 /**
  * Definition for singly-linked list.
  * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * int val;
+ * ListNode next;
+ * ListNode() {}
+ * ListNode(int val) { this.val = val; }
+ * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ArrayList<Integer> arr = new ArrayList<>();
-        ListNode current = head;
-        while(current != null){
-            arr.add(current.val);
-            current = current.next;
+        // reverse the list
+        head = reverseList(head);
+        // remove the nth node
+        if (n == 1) {
+            head = head.next;
+        } else {
+            ListNode curr = head;
+            for (int i = 1; i < n - 1; i++) {
+                if (curr.next != null) {
+                    curr = curr.next;
+                }
+            }
+            if (curr.next != null) {
+                curr.next = curr.next.next;
+            }
         }
-        int indexToRemove = arr.size() - n;
-        arr.remove(indexToRemove);
+        // return the reverse of the reverse
 
-        if(arr.isEmpty()){
-            return null;
-        }
-        //convert it to listNode
-        ListNode newHead = new ListNode(arr.get(0));
-        ListNode newCurrent = newHead;
+        return reverseList(head);
 
-        for(int i =1; i < arr.size(); i++){
-            newCurrent.next = new ListNode(arr.get(i));
-            newCurrent = newCurrent.next;
+    }
+
+    private ListNode reverseList(ListNode head) {
+        ListNode curr = head, next = null, prev = null;
+        while (curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
         }
-        return newHead;
+        return prev;
     }
 }
